@@ -5,7 +5,7 @@ import NavBar from './components/Navbar';
 import Notification from './components/Notification';
 import Login from './components/user/Login';
 import Room from './components/rooms/Room';
-
+import './app.css'
 const App = () => {
   return (
     <>
