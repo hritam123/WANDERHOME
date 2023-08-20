@@ -1,54 +1,75 @@
-import React from 'react';
-import { AppBar, IconButton, Typography, Container, Toolbar, Box, Button } from "@mui/material";
-import MenuIcon from '@mui/icons-material/Menu';
-import LockIcon from '@mui/icons-material/Lock'
-// import photoURL from "../profile.jpeg"
+import React, { useState } from 'react';
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  IconButton,
+  Toolbar,
+  Typography,
+} from '@mui/material';
+import { Lock, Menu } from '@mui/icons-material';
+
 import { useValue } from '../Context/ContextProvider';
 import UserIcons from './user/UserIcons';
-
-// const user = { name:"test", photoURL}
-
+import Sidebar from './sidebar/Sidebar';
 
 const Navbar = () => {
   const {
-    state:{currentUser},
+    state: { currentUser },
     dispatch,
-  } = useValue()
+  } = useValue();
+
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <AppBar>
-      <Container maxWidth="lg">
-        <Toolbar disableGutters>
-          <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-            <IconButton size='large' color='inherit' sx={{ mr: 1 }}>
-              <MenuIcon />
-            </IconButton>
+    <>
+      <AppBar>
+        <Container maxWidth="lg">
+          <Toolbar disableGutters>
+            <Box sx={{ mr: 1 }}>
+              <IconButton
+                size="large"
+                color="inherit"
+                onClick={() => setIsOpen(true)}
+              >
+                <Menu />
+              </IconButton>
+            </Box>
             <Typography
-              variant='h6'
-              component='h1'
+              variant="h6"
+              component="h1"
               noWrap
-              sx={{ display: { xs: 'none', md: 'block' } }}>
+              sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}
+            >
               You Are Welcome
             </Typography>
             <Typography
-              variant='h6'
-              component='h1'
+              variant="h6"
+              component="h1"
               noWrap
-              sx={{ display: { xs: 'block', md: 'none' } }}>
+              sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+            >
               YRW
             </Typography>
-          </Box>
-          {!currentUser ? ( <Button 
-          color='inherit' variant='h6' component='h1' startIcon={<LockIcon/>} onClick={()=>dispatch({type:"OPEN_LOGIN"})}>
-            Login
-          </Button>) : (
-            <UserIcons/>
-          ) }
-         
-        </Toolbar>
-      </Container>
-    </AppBar>
+            {!currentUser ? (
+              <Button
+                color="inherit"
+                startIcon={<Lock />}
+                onClick={() => dispatch({ type: 'OPEN_LOGIN' })}
+              >
+                Login
+              </Button>
+            ) : (
+              <UserIcons />
+            )}
+          </Toolbar>
+        </Container>
+      </AppBar>
+      <Toolbar />
+      <Sidebar {...{ isOpen, setIsOpen }} />
+    </>
   );
-}
+};
 
 export default Navbar;
